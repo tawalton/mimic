@@ -24,13 +24,15 @@ from mimic.model.image_objects import (
     RackspaceRedHatPVImage, RackspaceRedHatPVHMImage, RackspaceUbuntuPVImage, RackspaceUbuntuPVHMImage,
     RackspaceVyattaImage, RackspaceScientificImage, RackspaceOnMetalCentOSImage,
     RackspaceOnMetalCoreOSImage, RackspaceOnMetalDebianImage, RackspaceOnMetalFedoraImage,
-    RackspaceOnMetalUbuntuImage, OnMetalImage)
+    RackspaceOnMetalUbuntuImage, OnMetalImage, RackspaceSavedImage)
 
 from mimic.canned_responses.mimic_presets import get_presets
 from mimic.model.behaviors import (
     BehaviorRegistryCollection, EventDescription, Criterion, regexp_predicate
 )
 from twisted.web.http import ACCEPTED, BAD_REQUEST, FORBIDDEN, NOT_FOUND
+
+import uuid
 
 
 @attributes(['nova_message'])
@@ -675,6 +677,8 @@ class RegionalServerCollection(object):
         """
         Retrieve a :obj:`Image` object by its ID.
         """
+        if len(self.images_store) < 1:
+            self.create_images_list()
         for image in self.images_store:
             if image.image_id == image_id:
                 return image
@@ -943,6 +947,36 @@ class RegionalServerCollection(object):
                                          " while it is in task state other than active",
                                          http_action_request))
 
+        elif 'createImage' in action_json:
+            self.create_images_list()
+            image_name = action_json['createImage'].get('name')
+            server == self.server_by_id(server_id).image_ref
+            links = server.links_json(absolutize_url)
+            server_id = server.server_id
+            image_ref = server.image_ref
+
+            image = self.image_by_id(image_ref)
+            image_json = self.get_image(http_action_request, image_ref, absolutize_url)
+            image_dict = loads(image_json)
+            flavor_classes = image_dict['image']['metadata']['flavor_classes']
+            os_type = image_dict['image']['metadata']['os_type']
+            os_distro = image_dict['image']['metadata']['org.openstack__1__os_distro']
+            vm_mode = image_dict['image']['metadata']['vm_mode']
+            disk_config = image_dict['image']['metadata']['auto_disk_config']
+            image_id = str(uuid.uuid4())
+            image_size = image.image_size
+            minRam = image.minRam
+            minDisk = image.minDisk
+            saved_image = RackspaceSavedImage(image_id=image_id, tenant_id=self.tenant_id,
+                                              image_size=image_size, name=image_name, minRam=minRam,
+                                              minDisk=minDisk, links=links, server_id=server_id,
+                                              flavor_classes=flavor_classes, os_type=os_type,
+                                              os_distro=os_distro, vm_mode=vm_mode,
+                                              disk_config=disk_config)
+            self.images_store.append(saved_image)
+            print self.list_images(True, absolutize_url)
+
+
         else:
             return dumps(bad_request("There is no such action currently supported", http_action_request))
 
@@ -958,10 +992,9 @@ class RegionalServerCollection(object):
                          RackspaceScientificImage, RackspaceOnMetalCentOSImage,
                          RackspaceOnMetalCoreOSImage, RackspaceOnMetalDebianImage,
                          RackspaceOnMetalFedoraImage, RackspaceOnMetalUbuntuImage]
-
-        for image_class in image_classes:
-            for image, image_spec in image_class.images.iteritems():
-                if not self.image_by_id(image_spec['id']):
+        if len(self.images_store) < 1:
+            for image_class in image_classes:
+                for image, image_spec in image_class.images.iteritems():
                     image_name = image
                     image_id = image_spec['id']
                     minRam = image_spec['minRam']
