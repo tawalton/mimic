@@ -406,32 +406,8 @@ class NovaRegion(object):
         """
         Returns key pairs
         """
-        return json.dumps(get_key_pairs())
-
-    @app.route('/v2/<string:tenant_id>/servers/<string:server_id>/metadata',
-               branch=True)
-    def handle_server_metadata(self, request, tenant_id, server_id):
-        """
-        Handle metadata requests associated with a particular server.  Server
-        not found error message verified as of 2015-04-23 against Rackspace
-        Nova.
-        """
-        server = (self._region_collection_for_tenant(tenant_id)
-                  .server_by_id(server_id))
-        if server is None:
-            return json.dumps(not_found('Server does not exist', request))
-
-        return ServerMetadata(server).app.resource()
-
-    @app.route('/v2/<string:tenant_id>/servers/<string:server_id>/action', methods=['POST'])
-    def perform_action(self, request, tenant_id, server_id):
-        """
-        Perform the requested action on the server
-        """
-        return self._region_collection_for_tenant(tenant_id).request_action(request, server_id, self.url)
-
-
-class ServerMetadata(object):
+        return json.dumps(self._keypair_collection_for_tenant(
+            tenant_id).json_list())
 
     @app.route("/v2/<string:tenant_id>/os-keypairs", methods=['POST'])
     def create_key_pair(self, request, tenant_id):
@@ -460,6 +436,29 @@ class ServerMetadata(object):
         self._keypair_collection_for_tenant(
             tenant_id).remove_keypair(keypairname)
         request.setResponseCode(202)
+
+    @app.route('/v2/<string:tenant_id>/servers/<string:server_id>/metadata',
+               branch=True)
+    def handle_server_metadata(self, request, tenant_id, server_id):
+        """
+        Handle metadata requests associated with a particular server.  Server
+        not found error message verified as of 2015-04-23 against Rackspace
+        Nova.
+        """
+        server = (self._region_collection_for_tenant(tenant_id)
+                  .server_by_id(server_id))
+        if server is None:
+            return json.dumps(not_found('Server does not exist', request))
+
+        return ServerMetadata(server).app.resource()
+
+    @app.route('/v2/<string:tenant_id>/servers/<string:server_id>/action', methods=['POST'])
+    def perform_action(self, request, tenant_id, server_id):
+        """
+        Perform the requested action on the server
+        """
+        return self._region_collection_for_tenant(tenant_id).request_action(request, server_id, self.url)
+
 
 
 class ServerMetadata(object):
