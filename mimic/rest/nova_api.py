@@ -27,7 +27,6 @@ from mimic.model.nova_objects import (
 
 @implementer(IAPIMock, IPlugin)
 class NovaApi(object):
-
     """
     Rest endpoints for mocked Nova Api.
     """
@@ -83,7 +82,6 @@ class NovaApi(object):
 @implementer(IAPIMock, IPlugin)
 @attributes(["nova_api"])
 class NovaControlApi(object):
-
     """
     Rest endpoints for the Nova Control Api.
     """
@@ -180,7 +178,6 @@ class NovaControlApiRegion(object):
 
 
 class NovaRegion(object):
-
     """
     Klein routes for the API within a Cloud Servers region.
 
@@ -222,6 +219,8 @@ class NovaRegion(object):
                                              clock=self._session_store.clock))
         kp_region_collection = kp_global_collection.collection_for_region(
             self._name)
+        print "LOGGING: REGION COLLECTION TYPE FOR KEYPAIR: "
+        print type(kp_region_collection)
         return kp_region_collection
 
     app = MimicApp()
@@ -412,6 +411,9 @@ class NovaRegion(object):
         """
         Returns current key pairs
         """
+        # print "LOGGING TYPE: "
+        # print type(self._keypair_collection_for_tenant(tenant_id))
+        print "DEBUG STATEMENT"
         return json.dumps(self._keypair_collection_for_tenant(tenant_id).json_list())
 
     @app.route("/v2/<string:tenant_id>/os-keypairs", methods=['POST'])
@@ -444,7 +446,6 @@ class NovaRegion(object):
 
 
 class ServerMetadata(object):
-
     """
     Klein routes for a particular server's metadata.
     """
