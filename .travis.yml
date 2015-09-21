@@ -12,17 +12,9 @@ env:
 matrix:
     include:
         - python: 2.6
-          env: TOXENV=py26-twisted_old_logging
-        - python: 2.6
-          env: TOXENV=py26-twisted_new_logging
+          env: TOXENV=py26
         - python: 2.7
-          env: TOXENV=py27-twisted_old_logging
-        - python: 2.7
-          env: TOXENV=py27-twisted_new_logging
-        - python: pypy
-          env: TOXENV=pypy-twisted_old_logging
-        - python: pypy
-          env: TOXENV=pypy-twisted_new_logging
+          env: TOXENV=py27
         - python: 2.7
           env: TOXENV=docs
         - python: 2.7
@@ -35,15 +27,6 @@ matrix:
           env: TOXENV=docs-linkcheck
         - python: 2.7
           env: TOXENV=lint
-        - language: generic
-          os: osx
-          env: TOXENV=py27
-        - language: generic
-          os: osx
-          env: TOXENV=pypy
-        - language: c
-          os: osx
-          env: MACAPP_ENV=system
     allow_failures:
       - env: TOXENV=docs-linkcheck
 
@@ -55,13 +38,6 @@ script:
 
 after_success:
   - "source ~/.venv/bin/activate && codecov"
-
-notifications:
-  irc:
-     channels: "chat.freenode.net##mimic"
-     template:
-       - "%{repository}@%{branch} - %{author}: %{message} (%{build_url})"
-     use_notice: true
 
 branches:
   only:

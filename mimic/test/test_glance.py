@@ -1,23 +1,15 @@
 import treq
 import json
-
 from twisted.trial.unittest import SynchronousTestCase
-from twisted.internet.task import Clock
-
 from mimic.test.fixtures import APIMockHelper
-from mimic.test.helpers import request, json_request
+from mimic.test.helpers import request
 from mimic.rest.glance_api import GlanceApi
-from mimic.core import MimicCore
-from mimic.resource import MimicRoot
-from mimic.canned_responses.json.glance.glance_images_json import image_schema
-from mimic.model.glance_objects import random_image_list
 
 
 class GlanceAPITests(SynchronousTestCase):
     """
     Tests for the Glance plugin api
     """
-
     def get_responsebody(self, r):
         """
         util json response body
@@ -34,64 +26,85 @@ class GlanceAPITests(SynchronousTestCase):
 
     def test_list_images(self):
         """
-        List the images returned from glance
+        List the images returned from glance with no request args
         """
-        req = request(self, self.root, "GET", self.uri + '/images', '')
+        req = request(self, self.root, "GET", self.uri + '/images')
         resp = self.successResultOf(req)
         self.assertEquals(resp.code, 200)
         data = self.get_responsebody(resp)
         self.assertEquals(True, 'images' in json.dumps(data))
 
+    def test_list_images_with_public_visibility(self):
+        """
+        List images with public visibility in region IAD
+        """
+        # All regions other than IAD have 38 images
+        req = request(self, self.root, "GET", self.uri + '/images?visibility=public')
+        resp = self.successResultOf(req)
+        data = self.get_responsebody(resp)
+        self.assertEquals(resp.code, 200)
+        self.assertEqual(38, len(data['images']))
+        self.assertEquals(True, 'images' in json.dumps(data))
 
-class GlanceAdminAPITests(SynchronousTestCase):
-    """
-    Tests for the Glance Admin API
-    """
+        # The IAD region has 52 images which include OnMetal images
+        helper = APIMockHelper(self, [GlanceApi(['IAD'])])
+        root = helper.root
+        uri = helper.uri
+        req = request(self, root, "GET", uri + '/images?visibility=public')
+        resp = self.successResultOf(req)
+        data = self.get_responsebody(resp)
+        self.assertEquals(resp.code, 200)
+        self.assertEqual(52, len(data['images']))
+        self.assertEquals(True, 'onmetal' in json.dumps(data['images']))
 
-    def setUp(self):
+    def test_pending_images(self):
         """
-        Initialize core and root
+        Test pending images
         """
-        self.core = MimicCore(Clock(), [])
-        self.root = MimicRoot(self.core).app.resource()
+        req = request(self, self.root, "GET", self.uri + '/images?member_status=pending&'
+                                                         'visibility=shared&limit=1000')
+        resp = self.successResultOf(req)
+        data = self.get_responsebody(resp)
+        self.assertEqual(len(data['images']), 0)
+        self.assertEquals(resp.code, 200)
 
-    def list_images(self):
-        """
-        List images and return response
-        """
-        uri = "/glance/v2/images"
-        (response, content) = self.successResultOf(json_request(
-            self, self.root, "GET", uri))
-        self.assertEqual(200, response.code)
-        for each in content['images']:
-            self.assertEqual(each["status"], "active")
-        return content
+        req = request(self, self.root, "GET", self.uri + '/images?member_status=pending&'
+                                                         'visibility=dark&limit=1000')
+        resp = self.successResultOf(req)
+        body = self.get_responsebody(resp)
+        self.assertEqual(body, {"badRequest": {"message": "Bad Request.", "code": 400}})
+        self.assertEquals(resp.code, 400)
 
-    def test_list_image_schema(self):
+    def test_list_images_with_private_visibility(self):
         """
-        Get the image schema returned from glance admin API
+        List images with private visibility
         """
-        uri = "/glance/v2/schemas/image"
-        (response, content) = self.successResultOf(json_request(
-            self, self.root, "GET", uri))
-        self.assertEqual(200, response.code)
-        self.assertEqual(sorted(image_schema.keys()),
-                         sorted(content))
+        req = request(self, self.root, "GET", self.uri + '/images?visibility=private')
+        resp = self.successResultOf(req)
+        data = self.get_responsebody(resp)
+        self.assertEqual(len(data['images']), 0)
+        self.assertEquals(resp.code, 200)
 
-    def test_list_images_for_admin(self):
+    def test_list_images_with_no_request_args(self):
         """
-        List the images returned from the glance admin api
+        List images with no request args. IAD has 14 more images than other images due to OnMetal in
+            IAD only
         """
-        content = self.list_images()
-        self.assertEqual(len(random_image_list), len(content['images']))
-        actual_image_names = [image['name'] for image in content['images']]
-        expected_image_names = [each['name'] for each in random_image_list]
-        self.assertEqual(sorted(actual_image_names), sorted(expected_image_names))
+        # All regions other than IAD have 38 images
+        req = request(self, self.root, "GET", self.uri + '/images')
+        resp = self.successResultOf(req)
+        data = self.get_responsebody(resp)
+        self.assertEquals(resp.code, 200)
+        self.assertEqual(38, len(data['images']))
+        self.assertEquals(True, 'images' in json.dumps(data))
 
-    def test_list_images_for_admin_consistently(self):
-        """
-        List the images returned from the glance admin api
-        """
-        content1 = self.list_images()
-        content2 = self.list_images()
-        self.assertEqual(content2, content1)
+        # The IAD region has 52 images which include OnMetal images
+        helper = APIMockHelper(self, [GlanceApi(['IAD'])])
+        root = helper.root
+        uri = helper.uri
+        req = request(self, root, "GET", uri + '/images?visibility')
+        resp = self.successResultOf(req)
+        data = self.get_responsebody(resp)
+        self.assertEquals(resp.code, 200)
+        self.assertEqual(52, len(data['images']))
+        self.assertEquals(True, 'onmetal' in json.dumps(data['images']))
