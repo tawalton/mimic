@@ -10,8 +10,7 @@ from mimic.model.nova_objects import not_found
 from mimic.canned_responses.mimic_presets import get_presets
 
 
-@attributes(
-    ["tenant_id", "region_name", "clock"])
+@attributes(["tenant_id", "region_name", "clock"])
 class RegionalImageCollection(object):
     """
     A collection of images, in a given region, for a given tenant.

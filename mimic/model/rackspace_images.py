@@ -83,9 +83,87 @@ class Image(object):
             "name": self.name,
             "minRam": self.minRam,
             "minDisk": self.minDisk,
+            "status": "ACTIVE",
             "OS-EXT-IMG-SIZE:size": self.image_size,
             "com.rackspace__1__ui_default_show": self.is_default,
             "metadata": self.metadata_json()
+        })
+        return template
+
+
+@attributes(['image_id', 'tenant_id', 'name', 'minDisk', 'minRam', 'image_size', 'server_id', 'links',
+             'flavor_classes', 'os_type', 'os_distro', 'vm_mode', 'disk_config'])
+class RackspaceSavedImage(object):
+    """
+    A Rackspace saved image object representation
+    """
+    is_default = False
+
+    def metadata_json(self):
+        """
+        Create a JSON-serializable data structure describing
+        ``metadata`` for an image.
+        """
+        return {
+            "image_type": "snapshot",
+            "flavor_classes": self.flavor_classes,
+            "os_type": self.os_type,
+            "org.openstack__1__os_distro": self.os_distro,
+            "vm_mode": self.vm_mode,
+            "auto_disk_config": self.disk_config
+        }
+
+    def server_json(self):
+        """
+        Create a JSON-serializable data structure describing ``server`` info for a saved image
+        """
+        return {
+            "id": self.server_id,
+            "links": self.links
+        }
+
+    def links_json(self, absolutize_url):
+        """
+        Create a JSON-serializable data structure describing the links to this
+        image.
+        """
+        return [
+            {
+                "href": absolutize_url("v2/{0}/images/{1}"
+                                       .format(self.tenant_id, self.image_id)),
+                "rel": "self"
+            },
+            {
+                "href": absolutize_url("{0}/images/{1}"
+                                       .format(self.tenant_id, self.image_id)),
+                "rel": "bookmark"
+            },
+            {
+                "href": absolutize_url("/images/{0}"
+                                       .format(self.image_id)),
+                "type": "application/vnd.openstack.image",
+                "rel": "alternate"
+            }
+        ]
+
+    def detailed_json(self, absolutize_url):
+        """
+        Long-form JSON-serializable object representation of this flavor, as
+        returned by either a GET on this individual flavor or a member in the
+        list returned by the list-details request.
+        """
+        template = {}
+        template.update({
+            "id": self.image_id,
+            "status": "ACTIVE",
+            "links": self.links_json(absolutize_url),
+            "name": self.name,
+            "minRam": self.minRam,
+            "minDisk": self.minDisk,
+            "OS-EXT-IMG-SIZE:size": self.image_size,
+            "com.rackspace__1__ui_default_show": self.is_default,
+            "metadata": self.metadata_json(),
+            "server": self.server_json()
         })
         return template
 
@@ -131,7 +209,6 @@ class RackspaceWindowsImage(Image):
             "flavor_classes": "*,!onmetal",
             "image_type": "base",
             "os_type": "windows",
-            "status": "active",
             "org.openstack__1__os_distro": "com.microsoft.server"
         }
 
@@ -153,7 +230,6 @@ class RackspaceArchImage(Image):
             "flavor_classes": "*,!onmetal",
             "image_type": "base",
             "os_type": "linux",
-            "status": "active",
             "org.openstack__1__os_distro": "org.archlinux",
             "vm_mode": "hvm",
             "auto_disk_config": "disabled"
@@ -180,7 +256,6 @@ class RackspaceCentOSPVHMImage(Image):
             "flavor_classes": "*,!onmetal",
             "image_type": "base",
             "os_type": "linux",
-            "status": "active",
             "org.openstack__1__os_distro": "org.centos",
             "vm_mode": "hvm",
             "auto_disk_config": "disabled"
@@ -205,7 +280,6 @@ class RackspaceCentOSPVImage(Image):
             "flavor_classes": "*,!io1,!memory1,!compute1,!onmetal",
             "image_type": "base",
             "os_type": "linux",
-            "status": "active",
             "org.openstack__1__os_distro": "org.centos",
             "vm_mode": "xen",
             "auto_disk_config": "True"
@@ -234,7 +308,6 @@ class RackspaceCoreOSImage(Image):
             "flavor_classes": "*,!onmetal",
             "image_type": "base",
             "os_type": "linux",
-            "status": "active",
             "org.openstack__1__os_distro": "org.coreos",
             "vm_mode": "hvm",
             "auto_disk_config": "disabled"
@@ -265,7 +338,6 @@ class RackspaceDebianImage(Image):
             "flavor_classes": "*,!onmetal",
             "image_type": "base",
             "os_type": "linux",
-            "status": "active",
             "org.openstack__1__os_distro": "org.debian",
             "vm_mode": "hvm",
             "auto_disk_config": "disabled"
@@ -294,7 +366,6 @@ class RackspaceFedoraImage(Image):
             "flavor_classes": "*,!onmetal",
             "image_type": "base",
             "os_type": "linux",
-            "status": "active",
             "org.openstack__1__os_distro": "org.fedoraproject",
             "vm_mode": "hvm",
             "auto_disk_config": "disabled"
@@ -318,7 +389,6 @@ class RackspaceFreeBSDImage(Image):
             "flavor_classes": "*,!onmetal",
             "image_type": "base",
             "os_type": "linux",
-            "status": "active",
             "org.openstack__1__os_distro": "org.freebsd",
             "vm_mode": "hvm",
             "auto_disk_config": "disabled"
@@ -765,3 +835,10 @@ class ImageStore(object):
                         image.set_is_default()
                     cls._images_store.append(image)
         return cls._images_store
+
+    @classmethod
+    def add_image_to_store(cls, image):
+        """
+        Add a new image to the images store
+        """
+        cls._images_store.append(image)

@@ -421,7 +421,9 @@ class NovaRegion(object):
         """
         Perform the requested action on the server
         """
-        return self._region_collection_for_tenant(tenant_id).request_action(request, server_id, self.url)
+        regional_image_collection = self._image_collection_for_tenant(tenant_id)
+        return self._region_collection_for_tenant(tenant_id).request_action(request, server_id, self.url,
+                                                                            regional_image_collection)
 
 
 class ServerMetadata(object):

@@ -53,7 +53,7 @@ class NovaAPIImagesTests(SynchronousTestCase):
             self.assertEqual(sorted(each_image.keys()), sorted(['OS-EXT-IMG-SIZE:size',
                                                                 'com.rackspace__1__ui_default_show',
                                                                 'id', 'links', 'metadata', 'minDisk',
-                                                                'minRam', 'name']))
+                                                                'minRam', 'name', 'status']))
 
     def test_get_image_that_does_not_exist(self):
         """
@@ -82,7 +82,7 @@ class NovaAPIImagesTests(SynchronousTestCase):
         self.assertEqual(
             get_image_response_body['image']['id'], image_id)
         self.assertEqual(
-            get_image_response_body['image']['metadata']['status'], 'active')
+            get_image_response_body['image']['status'], 'ACTIVE')
 
     def test_get_OnMetal_server_image(self):
         """
