@@ -153,6 +153,7 @@ class NovaAPIOnMetalImageTests(SynchronousTestCase):
         Create a :obj:`MimicCore` with :obj:`NovaApi` as the only plugin.
         """
         nova_api = NovaApi(["IAD"])
+
         self.helper = APIMockHelper(
             self, [nova_api, NovaControlApi(nova_api=nova_api)]
         )

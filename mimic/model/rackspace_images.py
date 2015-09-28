@@ -64,11 +64,13 @@ class Image(object):
         Brief JSON-serializable version of this flavor, for the non-details
         list flavors request.
         """
-        return {
+        template = {}
+        template.update({
             "id": self.image_id,
             "links": self.links_json(absolutize_url),
             "name": self.name
-        }
+        })
+        return template
 
     def detailed_json(self, absolutize_url):
         """
@@ -89,6 +91,7 @@ class Image(object):
             "created": "1972-01-01_15-59-11",
             "updated": "1972-01-01_15-59-11",
             "progress": 100,
+            "status": "ACTIVE",
             "metadata": self.metadata_json()
         })
         return template
