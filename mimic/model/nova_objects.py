@@ -952,6 +952,8 @@ class RegionalServerCollection(object):
                                               disk_config=disk_config)
 
             ImageStore.add_image_to_store(saved_image)
+            http_action_request.setResponseCode(202)
+            return b''
         else:
             return dumps(bad_request("There is no such action currently supported", http_action_request))
 

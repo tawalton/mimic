@@ -9,11 +9,12 @@ from six import text_type
 from zope.interface import implementer
 from twisted.web.server import Request
 from twisted.plugin import IPlugin
-from mimic.model.glance_objects import GlanceImage
+from mimic.model.glance_image_collections import GlobalGlanceCollection
 from mimic.rest.mimicapp import MimicApp
 from mimic.catalog import Entry
 from mimic.catalog import Endpoint
 from mimic.imimic import IAPIMock
+from twisted.python.urlpath import URLPath
 
 
 Request.defaultContentType = 'application/json'
@@ -49,10 +50,10 @@ class GlanceApi(object):
         Get an :obj:`twisted.web.iweb.IResource` for the given URI prefix;
         implement :obj:`IAPIMock`.
         """
-        return GlanceMock(self, uri_prefix, session_store, region).app.resource()
+        return GlanceRegion(self, uri_prefix, session_store, region).app.resource()
 
 
-class GlanceMock(object):
+class GlanceRegion(object):
     """
     Glance Mock
     """
@@ -64,6 +65,23 @@ class GlanceMock(object):
         self._api_mock = api_mock
         self._session_store = session_store
         self._region = region_name
+
+    def url(self, suffix):
+        """
+        Generate a URL to an object within the Nova URL hierarchy, given the
+        part of the URL that comes after.
+        """
+        return str(URLPath.fromString(self.uri_prefix).child(suffix))
+
+    def _glance_image_collection_for_tenant(self, tenant_id):
+        tenant_session = self._session_store.session_for_tenant_id(tenant_id)
+        glance_image_global_collection = tenant_session.data_for_api(
+            "glance_image_collection",
+            lambda: GlobalGlanceCollection(tenant_id=tenant_id,
+                                          clock=self._session_store.clock))
+        glance_image_region_collection = glance_image_global_collection.collection_for_region(
+            self._region)
+        return glance_image_region_collection
 
     app = MimicApp()
 
@@ -94,11 +112,12 @@ class GlanceMock(object):
         elif 'visibility' in request.args:
             visible = request.args.get('visibility')[0]
             if visible == 'public':
-                image = GlanceImage()
-                return image.list_images(self._region, tenant_id, include_details=True)
+                # image = GlanceImage()
+                return self._glance_image_collection_for_tenant(tenant_id).\
+                    list_images(self._region, tenant_id, absolutize_url=self.url, include_details=True)
             else:
                 return dumps({"images": [], "schema": "/v2/schemas/images",
                               "first": "/v2/images?limit=1000&visibility=private"})
         else:
-            image = GlanceImage()
-            return image.list_images(self._region, tenant_id, include_details=True)
+            return self._glance_image_collection_for_tenant(tenant_id).\
+                list_images(self._region, tenant_id, absolutize_url=self.url, include_details=True)

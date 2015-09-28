@@ -4,7 +4,7 @@ from twisted.trial.unittest import SynchronousTestCase
 from mimic.test.fixtures import APIMockHelper
 from mimic.test.helpers import request
 from mimic.rest.glance_api import GlanceApi
-
+from mimic.rest.nova_api import NovaApi, NovaControlApi
 
 class GlanceAPITests(SynchronousTestCase):
     """
@@ -20,7 +20,7 @@ class GlanceAPITests(SynchronousTestCase):
         """
         Setup for glance tests
         """
-        helper = APIMockHelper(self, [GlanceApi()])
+        helper = APIMockHelper(self, [GlanceApi(["ORD"])])
         self.root = helper.root
         self.uri = helper.uri
 
