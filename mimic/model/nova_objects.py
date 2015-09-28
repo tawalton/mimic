@@ -644,7 +644,6 @@ def metadata_to_creation_behavior(metadata):
 @attributes(
     ["tenant_id", "region_name", "clock",
      Attribute("servers", default_factory=list),
-     Attribute("images_store", default_factory=list),
      Attribute(
          "behavior_registry_collection",
          default_factory=lambda: BehaviorRegistryCollection())]
@@ -667,6 +666,7 @@ class RegionalServerCollection(object):
         """
         Request that a server be created.
         """
+        print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  " + str(len(self.servers))
         metadata = creation_json.get('server', {}).get('metadata') or {}
         behavior = metadata_to_creation_behavior(metadata)
         if behavior is None:
