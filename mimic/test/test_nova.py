@@ -908,22 +908,18 @@ class NovaAPITests(SynchronousTestCase):
         )
         root = helper.root
         uri = helper.uri
-        print "################################## " + uri
         image_list = request(self, root, "GET", uri + '/images')
 
         image_list_response = self.successResultOf(image_list)
         image_list_response_body = self.successResultOf(treq.json_content(image_list_response))
-        random_image_choice = random.randint(0, (len(image_list_response_body['images']))-1)
-        print 'CHOICE   ' + str(random_image_choice)
+        random_image_choice = random.randint(0, (len(image_list_response_body['images'])) - 1)
         image_id = image_list_response_body['images'][random_image_choice]['id']
         server_name = 'createdFromImage'
         self.create_server_response, self.create_server_response_body = (
-                create_server(helper, name=server_name, imageRef=image_id))
+            create_server(helper, name=server_name, imageRef=image_id))
         server_id = self.create_server_response_body['server']['id']
-        print uri
         create_image = request(self, root, "POST", uri + '/servers/' + server_id + '/action',
                                create_image_request)
-        print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^" + uri
         create_image_response = self.successResultOf(create_image)
         self.assertEqual(create_image_response.code, 202)
 

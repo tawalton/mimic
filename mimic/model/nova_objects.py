@@ -21,7 +21,7 @@ from mimic.model.behaviors import (
     BehaviorRegistryCollection, EventDescription, Criterion, regexp_predicate
 )
 from twisted.web.http import ACCEPTED, BAD_REQUEST, FORBIDDEN, NOT_FOUND
-from mimic.model.rackspace_images import RackspaceSavedImage, ImageStore
+from mimic.model.rackspace_images import RackspaceSavedImage
 
 
 @attributes(['nova_message'])
@@ -666,7 +666,6 @@ class RegionalServerCollection(object):
         """
         Request that a server be created.
         """
-        print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  " + str(len(self.servers))
         metadata = creation_json.get('server', {}).get('metadata') or {}
         behavior = metadata_to_creation_behavior(metadata)
         if behavior is None:
@@ -951,7 +950,7 @@ class RegionalServerCollection(object):
                                               os_distro=os_distro, vm_mode=vm_mode,
                                               disk_config=disk_config)
 
-            ImageStore.add_image_to_store(saved_image)
+            regional_image_collection.add_image_to_store(saved_image)
             http_action_request.setResponseCode(202)
             return b''
         else:
