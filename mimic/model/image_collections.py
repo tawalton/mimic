@@ -34,7 +34,7 @@ class RegionalImageCollection(object):
             if self.region_name != "IAD" and isinstance(image, OnMetalImage):
                 continue
             if include_details:
-                images.append(image.detailed_json(absolutize_url))
+                images.append(image.detailed_json(True, absolutize_url))
             else:
                 images.append(image.brief_json(absolutize_url))
         result = {"images": images}
@@ -52,7 +52,7 @@ class RegionalImageCollection(object):
         image = self.image_by_id(image_id)
         if image is None:
             return dumps(not_found('Image not found.', http_get_request))
-        return dumps({"image": image.detailed_json(absolutize_url)})
+        return dumps({"image": image.detailed_json(True, absolutize_url)})
 
 
 @attributes(["tenant_id", "clock",

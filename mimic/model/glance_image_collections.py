@@ -32,9 +32,7 @@ class RegionalGlanceCollection(object):
             if region_name != "IAD" and isinstance(image, OnMetalImage):
                 continue
             else:
-                print absolutize_url
-                print image
-                images.append(image.detailed_json(absolutize_url))
+                images.append(image.detailed_json(False, absolutize_url))
         result = {"images": images, "schema": "/v2/schemas/images",
                   "first": "/v2/images?limit=1000"}
 
@@ -58,5 +56,5 @@ class GlobalGlanceCollection(object):
         if region_name not in self.regional_collections:
             self.regional_collections[region_name] = (
                 RegionalGlanceCollection(tenant_id=self.tenant_id, region_name=region_name,
-                                        clock=self.clock))
+                                         clock=self.clock))
         return self.regional_collections[region_name]

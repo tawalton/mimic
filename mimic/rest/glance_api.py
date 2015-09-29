@@ -78,7 +78,7 @@ class GlanceRegion(object):
         glance_image_global_collection = tenant_session.data_for_api(
             "glance_image_collection",
             lambda: GlobalGlanceCollection(tenant_id=tenant_id,
-                                          clock=self._session_store.clock))
+                                           clock=self._session_store.clock))
         glance_image_region_collection = glance_image_global_collection.collection_for_region(
             self._region)
         return glance_image_region_collection

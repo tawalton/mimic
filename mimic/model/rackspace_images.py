@@ -72,7 +72,7 @@ class Image(object):
         })
         return template
 
-    def detailed_json(self, absolutize_url):
+    def detailed_json(self, metadata, absolutize_url):
         """
         Long-form JSON-serializable object representation of this flavor, as
         returned by either a GET on this individual flavor or a member in the
@@ -91,9 +91,16 @@ class Image(object):
             "created": "1972-01-01_15-59-11",
             "updated": "1972-01-01_15-59-11",
             "progress": 100,
-            "status": "ACTIVE",
-            "metadata": self.metadata_json()
+            "status": "ACTIVE"
         })
+        if metadata:
+            template.update({
+                "metadata": self.metadata_json()
+            })
+        else:
+            template.update(
+                self.metadata_json()
+            )
         return template
 
 
@@ -152,7 +159,7 @@ class RackspaceSavedImage(object):
             }
         ]
 
-    def detailed_json(self, absolutize_url):
+    def detailed_json(self, metadata, absolutize_url):
         """
         Long-form JSON-serializable object representation of this flavor, as
         returned by either a GET on this individual flavor or a member in the
@@ -168,9 +175,16 @@ class RackspaceSavedImage(object):
             "minDisk": self.minDisk,
             "OS-EXT-IMG-SIZE:size": self.image_size,
             "com.rackspace__1__ui_default_show": self.is_default,
-            "metadata": self.metadata_json(),
             "server": self.server_json()
         })
+        if metadata:
+            template.update({
+                "metadata": self.metadata_json()
+            })
+        else:
+            template.update(
+                self.metadata_json()
+            )
         return template
 
 
@@ -654,7 +668,7 @@ class OnMetalImage(object):
             "name": self.name
         }
 
-    def detailed_json(self, absolutize_url):
+    def detailed_json(self, metadata, absolutize_url):
         """
         Long-form JSON-serializable object representation of this flavor, as
         returned by either a GET on this individual flavor or a member in the
@@ -672,9 +686,16 @@ class OnMetalImage(object):
             "created": "1972-01-01_15-59-11",
             "updated": "1972-01-01_15-59-11",
             "status": "ACTIVE",
-            "progress": 100,
-            "metadata": self.metadata_json()
+            "progress": 100
         })
+        if metadata:
+            template.update({
+                "metadata": self.metadata_json()
+            })
+        else:
+            template.update(
+                self.metadata_json()
+            )
         return template
 
 
@@ -832,8 +853,6 @@ class ImageStore(object):
                          RackspaceScientificImage, RackspaceOnMetalCentOSImage,
                          RackspaceOnMetalCoreOSImage, RackspaceOnMetalDebianImage,
                          RackspaceOnMetalFedoraImage, RackspaceOnMetalUbuntuImage]
-        print 'image store size: '
-        print str(len(cls._images_store))
         if len(cls._images_store) < 1:
             for image_class in image_classes:
                 for image, image_spec in image_class.images.iteritems():

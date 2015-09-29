@@ -666,7 +666,6 @@ class RegionalServerCollection(object):
         """
         Request that a server be created.
         """
-        print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  " + str(len(self.servers))
         metadata = creation_json.get('server', {}).get('metadata') or {}
         behavior = metadata_to_creation_behavior(metadata)
         if behavior is None:
