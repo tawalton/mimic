@@ -26,6 +26,7 @@ class NovaAPIVirtualImageTests(SynchronousTestCase):
         )
         self.root = self.helper.root
         self.uri = self.helper.uri
+        print "-----------------------------------> " + self.uri
 
     def get_server_image(self, postfix):
         """
@@ -159,6 +160,7 @@ class NovaAPIOnMetalImageTests(SynchronousTestCase):
         )
         self.root = self.helper.root
         self.uri = self.helper.uri
+        print "============================> " + self.uri
 
     def get_server_image(self, postfix):
         """

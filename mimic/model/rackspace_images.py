@@ -813,46 +813,46 @@ class RackspaceOnMetalCentOSImage(OnMetalImage):
         }
 
 
-# @attributes([Attribute("images_store", default_factory=list)])
-# class ImageStore(object):
-#     """
-#     A store for images to share between nova_api and glance_api
-#     """
-#
-#     @classmethod
-#     def create_image_store(cls, tenant_id):
-#         """
-#         Generates the data for each image in each image class
-#         """
-#         image_classes = [RackspaceWindowsImage, RackspaceArchImage, RackspaceCentOSPVImage,
-#                          RackspaceCentOSPVHMImage, RackspaceCoreOSImage, RackspaceDebianImage,
-#                          RackspaceFedoraImage, RackspaceFreeBSDImage, RackspaceGentooImage,
-#                          RackspaceOpenSUSEImage, RackspaceRedHatPVImage, RackspaceRedHatPVHMImage,
-#                          RackspaceUbuntuPVImage, RackspaceUbuntuPVHMImage, RackspaceVyattaImage,
-#                          RackspaceScientificImage, RackspaceOnMetalCentOSImage,
-#                          RackspaceOnMetalCoreOSImage, RackspaceOnMetalDebianImage,
-#                          RackspaceOnMetalFedoraImage, RackspaceOnMetalUbuntuImage]
-#         print 'image store size: '
-#         print str(len(cls.images_store))
-#         if len(cls.images_store) < 1:
-#             for image_class in image_classes:
-#                 for image, image_spec in image_class.images.iteritems():
-#                     image_name = image
-#                     image_id = image_spec['id']
-#                     minRam = image_spec['minRam']
-#                     minDisk = image_spec['minDisk']
-#                     image_size = image_spec['OS-EXT-IMG-SIZE:size']
-#                     image = image_class(image_id=image_id, tenant_id=tenant_id,
-#                                         image_size=image_size, name=image_name, minRam=minRam,
-#                                         minDisk=minDisk)
-#                     if 'com.rackspace__1__ui_default_show' in image_spec:
-#                         image.set_is_default()
-#                     cls.images_store.append(image)
-#         return cls.images_store
-#
-#     @classmethod
-#     def add_image_to_store(cls, image):
-#         """
-#         Add a new image to the images store
-#         """
-#         cls.images_store.append(image)
+class ImageStore(object):
+    """
+    A store for images to share between nova_api and glance_api
+    """
+    _images_store = []
+
+    @classmethod
+    def create_image_store(cls, tenant_id):
+        """
+        Generates the data for each image in each image class
+        """
+        image_classes = [RackspaceWindowsImage, RackspaceArchImage, RackspaceCentOSPVImage,
+                         RackspaceCentOSPVHMImage, RackspaceCoreOSImage, RackspaceDebianImage,
+                         RackspaceFedoraImage, RackspaceFreeBSDImage, RackspaceGentooImage,
+                         RackspaceOpenSUSEImage, RackspaceRedHatPVImage, RackspaceRedHatPVHMImage,
+                         RackspaceUbuntuPVImage, RackspaceUbuntuPVHMImage, RackspaceVyattaImage,
+                         RackspaceScientificImage, RackspaceOnMetalCentOSImage,
+                         RackspaceOnMetalCoreOSImage, RackspaceOnMetalDebianImage,
+                         RackspaceOnMetalFedoraImage, RackspaceOnMetalUbuntuImage]
+        print 'image store size: '
+        print str(len(cls._images_store))
+        if len(cls._images_store) < 1:
+            for image_class in image_classes:
+                for image, image_spec in image_class.images.iteritems():
+                    image_name = image
+                    image_id = image_spec['id']
+                    minRam = image_spec['minRam']
+                    minDisk = image_spec['minDisk']
+                    image_size = image_spec['OS-EXT-IMG-SIZE:size']
+                    image = image_class(image_id=image_id, tenant_id=tenant_id,
+                                        image_size=image_size, name=image_name, minRam=minRam,
+                                        minDisk=minDisk)
+                    if 'com.rackspace__1__ui_default_show' in image_spec:
+                        image.set_is_default()
+                    cls._images_store.append(image)
+        return cls._images_store
+
+    @classmethod
+    def add_image_to_store(cls, image):
+        """
+        Add a new image to the images store
+        """
+        cls._images_store.append(image)
