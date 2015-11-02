@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, unicode_literals
 
 from twisted.internet.task import Clock
 from twisted.trial.unittest import SynchronousTestCase
@@ -7,8 +7,8 @@ from mimic.core import MimicCore
 from mimic.plugins import (nova_plugin, loadbalancer_plugin, swift_plugin,
                            queue_plugin, maas_plugin, rackconnect_v3_plugin,
                            glance_plugin, cloudfeeds_plugin, dns_plugin,
-                           volumes_plugin, support_plugin, networks_plugin)
-
+                           volumes_plugin, support_plugin, networks_plugin,
+                           heat_plugin)
 
 class CoreBuildingTests(SynchronousTestCase):
     """
@@ -32,9 +32,11 @@ class CoreBuildingTests(SynchronousTestCase):
         core = MimicCore.fromPlugins(Clock())
         plugin_apis = set((
             glance_plugin.glance,
+            heat_plugin.heat,
             loadbalancer_plugin.loadbalancer,
             loadbalancer_plugin.loadbalancer_control,
             maas_plugin.maas,
+            maas_plugin.maas_control,
             nova_plugin.nova,
             nova_plugin.nova_control_api,
             queue_plugin.queue,

@@ -5,6 +5,9 @@ Automatically generate tests for behavior registration/deletion APIs.
 Also contains helper functions for specific behavior testing.
 (:see: :func:`register_behavior`)
 """
+
+from __future__ import absolute_import, division, unicode_literals
+
 import json
 
 from uuid import UUID, uuid4
@@ -151,7 +154,7 @@ def make_behavior_tests(behavior_helper_factory):
             Given a behavior ID, attempts to delete it.
             """
             response, body = self.successResultOf(request_with_content(
-                self, self.bhelper.root, "DELETE",
+                self, self.bhelper.root, b"DELETE",
                 "{0}/{1}".format(self.bhelper.behavior_api_endpoint,
                                  behavior_id)))
             self.assertEqual(response.code, status)
@@ -171,10 +174,12 @@ def make_behavior_tests(behavior_helper_factory):
             results in a 400.
             """
             name, params = self.bhelper.names_and_params[0]
-            almost_correct = json.dumps({'name': name, 'parameters': params})
-            for invalid in ('', '{}', almost_correct):
+            almost_correct = json.dumps(
+                {'name': name, 'parameters': params}
+            ).encode("utf-8")
+            for invalid in (b'', b'{}', almost_correct):
                 response, body = self.successResultOf(request_with_content(
-                    self, self.bhelper.root, "POST",
+                    self, self.bhelper.root, b"POST",
                     self.bhelper.behavior_api_endpoint,
                     invalid))
                 self.assertEqual(response.code, 400)
@@ -241,7 +246,9 @@ def make_behavior_tests(behavior_helper_factory):
                 self.bhelper.validate_default_behavior(
                     *self.bhelper.trigger_event())
 
-    Tester.__name__ = "TestsFor{0}".format(behavior_helper_factory.name)
+    Tester.__name__ = str("TestsFor{0}").format(
+        str(behavior_helper_factory.name)
+    )
     Tester.__module__ = behavior_helper_factory.module
     return Tester
 
@@ -389,7 +396,7 @@ def register_behavior(test_case, root, uri, behavior_name, parameters,
                      "parameters": parameters,
                      "criteria": criteria}
     response, body = test_case.successResultOf(json_request(
-        test_case, root, "POST", uri, json.dumps(behavior_json)))
+        test_case, root, b"POST", uri, behavior_json))
 
     test_case.assertEqual(response.code, 201)
     behavior_id = body.get("id")

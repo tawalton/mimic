@@ -4,6 +4,8 @@
 API mock for OpenStack Swift / Rackspace Cloud Files.
 """
 
+from __future__ import absolute_import, division, unicode_literals
+
 from uuid import uuid4, uuid5, NAMESPACE_URL
 from six import text_type
 
@@ -27,15 +29,17 @@ def normal_tenant_id_to_crazy_mosso_id(normal_tenant_id):
     loadbalancers, and so on) into the somewhat peculiar tenant ID used by
     Cloud Files, for maximum realism.
 
+    :param unicode normal_tenant_id: the tenant ID from identity.
+
     :return: a new tenant ID that looks like a Cloud Files tenant ID
-    :rtype: str
+    :rtype: unicode
     """
-    return (
-        "MossoCloudFS_" +
-        str(uuid5(NAMESPACE_URL,
-                  b"https://github.com/rackerlabs/mimic/ns/tenant/"
-                  + normal_tenant_id.encode("utf-8")))
-    )
+    full_namespace = (u"https://github.com/rackerlabs/mimic/ns/tenant/"
+                      + normal_tenant_id)
+    if bytes is str:
+        full_namespace = full_namespace.encode("ascii")
+    uuid = uuid5(NAMESPACE_URL, full_namespace)
+    return u"MossoCloudFS_" + text_type(uuid)
 
 
 @implementer(IAPIMock, IPlugin)
@@ -155,12 +159,12 @@ class SwiftTenantInRegion(object):
         status code of 200 when such a container exists, 404 if not.
         """
         if container_name in self.containers:
-            request.responseHeaders.setRawHeaders("content-type",
-                                                  ["application/json"])
-            request.responseHeaders.setRawHeaders("x-container-object-count",
-                                                  ["0"])
-            request.responseHeaders.setRawHeaders("x-container-bytes-used",
-                                                  ["0"])
+            request.responseHeaders.setRawHeaders(b"content-type",
+                                                  [b"application/json"])
+            request.responseHeaders.setRawHeaders(b"x-container-object-count",
+                                                  [b"0"])
+            request.responseHeaders.setRawHeaders(b"x-container-bytes-used",
+                                                  [b"0"])
             request.setResponseCode(OK)
             return dumps([
                 obj.as_json() for obj in
@@ -185,7 +189,8 @@ class SwiftTenantInRegion(object):
         """
         request.setResponseCode(201)
         container = self.containers[container_name]
-        content_type = request.requestHeaders.getRawHeaders('content-type')[0]
+        content_type = (request.requestHeaders
+                        .getRawHeaders(b'content-type')[0].decode("ascii"))
         container.objects[object_name] = Object(
             name=object_name, data=request.content.read(),
             content_type=content_type

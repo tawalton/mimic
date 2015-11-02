@@ -1,6 +1,9 @@
 """
 Unit tests for :mod:`mimic.util`
 """
+
+from __future__ import absolute_import, division, unicode_literals
+
 from twisted.trial.unittest import SynchronousTestCase
 from twisted.web.resource import Resource
 
@@ -15,7 +18,7 @@ class HelperTests(SynchronousTestCase):
 
     matches = [(0, "1970-01-01T00:00:00.000000Z"),
                (1.5, "1970-01-01T00:00:01.500000Z"),
-               (121.4005, "1970-01-01T00:02:01.400500Z")]
+               (121.4, "1970-01-01T00:02:01.400000Z")]
 
     def _validate_ipv4_address(self, address, *prefixes):
         nums = [int(x) for x in address.split('.')]
@@ -116,7 +119,7 @@ class TestRandomString(SynchronousTestCase):
         the characters you provide.
         """
         desired_chars = "02468"
-        for iteration in xrange(100):
+        for iteration in range(100):
             a_string = helper.random_string(1024, selectable=desired_chars)
             for char in a_string:
                 self.assertTrue(char in desired_chars)

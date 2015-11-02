@@ -4,6 +4,9 @@
 API mock for the Rackspace RackConnect v3 API, which is documented at:
 http://docs.rcv3.apiary.io/
 """
+
+from __future__ import absolute_import, division, unicode_literals
+
 from collections import defaultdict
 import json
 from uuid import uuid4, UUID
@@ -13,17 +16,16 @@ from six import text_type
 
 from twisted.plugin import IPlugin
 from twisted.web.http import NOT_FOUND, NOT_IMPLEMENTED
-from twisted.web.server import Request
 from zope.interface import implementer
 
 from mimic.catalog import Entry
 from mimic.catalog import Endpoint
 from mimic.imimic import IAPIMock
 from mimic.rest.mimicapp import MimicApp
+from mimic.util.helper import json_from_request
 from mimic.util.helper import random_ipv4, seconds_to_timestamp
 
 
-Request.defaultContentType = 'application/json'
 timestamp_format = '%Y-%m-%dT%H:%M:%SZ'
 
 
@@ -267,7 +269,7 @@ class LoadBalancerPoolsInRegion(object):
 
         TODO: blow up with a 500 and verify if the given server exists in nova.
         """
-        body = json.loads(request.content.read())
+        body = json_from_request(request)
         added_nodes = []
         error_response = {"errors": []}
 
@@ -322,7 +324,7 @@ class LoadBalancerPoolsInRegion(object):
 
         TODO: For now, blow up with a 500 and verify if the given server exists in nova.
         """
-        body = json.loads(request.content.read())
+        body = json_from_request(request)
         error_response = {"errors": []}
 
         for each in body:

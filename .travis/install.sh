@@ -25,13 +25,22 @@ if [[ "$DARWIN" = true ]]; then
             ;;
         pypy)
             brew upgrade pyenv
-            pyenv install pypy-2.5.1
-            pyenv global pypy-2.5.1
+            pyenv install pypy-2.6.1
+            pyenv global pypy-2.6.1
             ;;
     esac
     pyenv rehash
     pip install --user virtualenv
 else
+    # temporary pyenv installation to get pypy-2.6 before container infra upgrade
+    if [[ "${TOXENV}" == "pypy" ]]; then
+        git clone https://github.com/yyuu/pyenv.git ~/.pyenv
+        PYENV_ROOT="$HOME/.pyenv"
+        PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init -)"
+        pyenv install pypy-2.6.1
+        pyenv global pypy-2.6.1
+    fi
     pip install virtualenv
 fi
 
@@ -40,9 +49,8 @@ if [[ "${MACAPP_ENV}" == "system" ]]; then
 else
     python -m virtualenv ~/.venv
     source ~/.venv/bin/activate
-    pip install wheel
-    pip wheel cryptography lxml
     pip install tox codecov
+    coverage erase
     tox --recreate --notest
 
     # If "installdeps" fails, "tox" exits with an error, and the "set -e" above

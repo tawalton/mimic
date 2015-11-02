@@ -2,6 +2,8 @@
 Canned response for Queue
 """
 
+from __future__ import absolute_import, division, unicode_literals
+
 
 def queues_example(queue_name):
     """
@@ -26,7 +28,7 @@ def list_queues(tenant_id, q_cache):
     """
     Returns a list of queues with response code 200
     """
-    return {'queues': q_cache.values() or []}, 200
+    return {'queues': list(q_cache.values()) or []}, 200
 
 
 def delete_queue(queue_name, q_cache):

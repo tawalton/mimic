@@ -1,6 +1,9 @@
 """
 Mailgun object storage
 """
+
+from __future__ import absolute_import, division, unicode_literals
+
 import time
 from characteristic import attributes, Attribute
 
@@ -115,5 +118,5 @@ class MessageStore(object):
         Retrieve a :obj:`Message` object by its `to` address.
         """
         for each_msg in self.message_store:
-            if each_msg.to == to_address[0]:
+            if each_msg.to == to_address:
                 return each_msg

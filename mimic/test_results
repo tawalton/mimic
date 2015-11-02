@@ -1,0 +1,560 @@
+GLOB sdist-make: /Users/thom7100/projects/reach_mimic/mimic/setup.py
+py27 inst-nodeps: /Users/thom7100/projects/reach_mimic/mimic/.tox/dist/mimic-1.5.0.zip
+py27 runtests: PYTHONHASHSEED='2149114424'
+py27 runtests: commands[0] | coverage erase
+py27 runtests: commands[1] | coverage run /Users/thom7100/projects/reach_mimic/mimic/.tox/py27/bin/trial --rterrors mimic
+mimic.test.test_auth
+  AuthIntegrationTests
+    test_api_key_then_other_token_same_tenant ...                          [OK]
+    test_user_for_tenant_then_impersonation ...                            [OK]
+  CatalogGenerationTests
+    test_endpoints_response ...                                            [OK]
+    test_tokens_response ...                                               [OK]
+    test_unversioned_entry ...                                             [OK]
+  GetAuthTokenAPITests
+    test_auth_accepts_tenant_id ...                                        [OK]
+    test_auth_accepts_tenant_name ...                                      [OK]
+    test_authentication_request_with_invalid_body_causes_http_bad_request ... [OK]
+    test_authentication_request_with_no_body_causes_http_bad_request ...   [OK]
+    test_response_has_auth_token ...                                       [OK]
+    test_response_has_same_roles_despite_number_of_auths ...               [OK]
+    test_response_has_user_admin_identity_role ...                         [OK]
+    test_response_service_catalog_has_base_uri ...                         [OK]
+  GetEndpointsForTokenTests
+    test_api_service_endpoints_are_not_duplicated ...                      [OK]
+    test_get_token_and_catalog_for_api_credentials ...                     [OK]
+    test_get_token_and_catalog_for_invalid_json_request_body ...           [OK]
+    test_get_token_and_catalog_for_password_credentials ...                [OK]
+    test_get_token_and_catalog_for_token_credentials ...                   [OK]
+    test_impersonation_request_with_invalid_body_causes_http_bad_request ... [OK]
+    test_impersonation_request_with_no_body_causes_http_bad_request ...    [OK]
+    test_impersonation_without_expires_in_seconds_attribute ...            [OK]
+    test_rax_kskey_apikeycredentials ...                                   [OK]
+    test_response_for_get_username ...                                     [OK]
+    test_response_for_impersonation ...                                    [OK]
+    test_response_for_list_users ...                                       [OK]
+    test_response_for_list_users_after_authentication ...                  [OK]
+    test_response_for_validate_impersonated_token ...                      [OK]
+    test_response_for_validate_impersonated_token_multiple_users ...       [OK]
+    test_response_for_validate_token ...                                   [OK]
+    test_response_for_validate_token_then_authenticate ...                 [OK]
+    test_response_for_validate_token_when_invalid ...                      [OK]
+    test_response_for_validate_token_when_tenant_not_provided ...          [OK]
+    test_response_for_validate_token_with_admin_and_observer_role ...      [OK]
+    test_response_for_validate_token_with_creator_role ...                 [OK]
+    test_response_for_validate_token_with_maas_admin_role ...              [OK]
+    test_response_for_validate_token_with_observer_role ...                [OK]
+    test_response_for_validate_token_with_racker_role ...                  [OK]
+    test_response_service_catalog_has_base_uri ...                         [OK]
+    test_session_created_for_token ...                                     [OK]
+    test_token_and_catalog_for_api_credentials_wrong_tenant ...            [OK]
+    test_token_and_catalog_for_password_credentials_wrong_tenant ...       [OK]
+    test_token_and_catalog_for_token_credentials_wrong_tenant ...          [OK]
+  IdentityBehaviorInjectionTests
+    test_string_errors_as_well_as_json_errors ...                          [OK]
+    test_tenant_id_criteria_works_on_all_auth_methods_with_tenant ...      [OK]
+    test_username_criteria_works_on_all_auth_methods_with_username ...     [OK]
+  TestsForIdentityAuthBehaviorControlPlane
+    test_deleting_behavior_removes_top_behavior ...                        [OK]
+    test_deleting_nonexistant_behavior_fails ...                           [OK]
+    test_providing_invalid_json_fails_with_400 ...                         [OK]
+    test_sequence_behavior ...                                             [OK]
+mimic.test.test_cloudfeeds_int
+  TestCloudFeedsAPI
+    test_control_plane_access_should_404 ...                               [OK]
+    test_data_plane_access_should_404 ...                                  [OK]
+mimic.test.test_cloudfeeds_unit
+  TestCloudFeeds
+    test_creation ...                                                      [OK]
+    test_get_products ...                                                  [OK]
+    test_product_registration ...                                          [OK]
+    test_product_reregistration ...                                        [OK]
+  TestCloudFeedsProduct
+    test_creation ...                                                      [OK]
+    test_post ...                                                          [OK]
+  TestSerialization
+    test_json_description ...                                              [OK]
+    test_json_product_list ...                                             [OK]
+mimic.test.test_core
+  CoreBuildingTests
+    test_from_plugin_includes_all_plugins ...                              [OK]
+    test_no_uuids_if_no_plugins ...                                        [OK]
+mimic.test.test_fastly
+  FastlyAPITests
+    test_activate_version ...                                              [OK]
+    test_check_domains ...                                                 [OK]
+    test_create_backend ...                                                [OK]
+    test_create_domain ...                                                 [OK]
+    test_create_service ...                                                [OK]
+    test_create_version ...                                                [OK]
+    test_deactivate_version ...                                            [OK]
+    test_delete_service ...                                                [OK]
+    test_get_customer ...                                                  [OK]
+    test_get_service_by_name ...                                           [OK]
+    test_get_service_details ...                                           [OK]
+    test_health ...                                                        [OK]
+    test_list_versions ...                                                 [OK]
+mimic.test.test_flavors
+  NovaAPIFlavorsTests
+    test_get_OnMetal_flavor ...                                            [OK]
+    test_get_flavor ...                                                    [OK]
+    test_get_flavor_list ...                                               [OK]
+    test_get_flavor_list_after_list_flavors ...                            [OK]
+    test_get_flavor_list_with_OnMetal ...                                  [OK]
+    test_get_flavor_list_with_OnMetal_negative ...                         [OK]
+    test_get_flavor_list_with_details ...                                  [OK]
+    test_get_flavor_list_with_details_is_consistent ...                    [OK]
+    test_get_server_flavor_negative ...                                    [OK]
+mimic.test.test_glance
+  GlanceAPITests
+    test_list_images ...                                                   [OK]
+    test_list_images_with_no_request_args ...                              [OK]
+    test_list_images_with_private_visibility ...                           [OK]
+    test_list_images_with_public_visibility ...                            [OK]
+    test_pending_images ...                                                [OK]
+mimic.test.test_identity
+  IdentitySessionTests
+    test_get_identity_session ...                                          [OK]
+    test_identity_admin ...                                                [OK]
+mimic.test.test_loadbalancer
+  LoadbalancerAPINegativeTests
+    test_bulk_delete_empty_list_takes_precedence_over_immutable ...        [OK]
+    test_bulk_delete_not_active ...                                        [OK]
+    test_create_load_balancer_in_building_state ...                        [OK]
+    test_delete_load_balancer_and_pending_delete_state ...                 [OK]
+    test_load_balancer_goes_into_error_state_when_adding_node ...          [OK]
+    test_load_balancer_goes_into_pending_update_state ...                  [OK]
+    test_load_balancer_reverts_from_pending_update_state ...               [OK]
+    test_updating_node_loadbalancer_state ...                              [OK]
+  LoadbalancerAPITests
+    test_add_load_balancer ...                                             [OK]
+    test_add_load_balancer_request_with_invalid_body_causes_bad_request ... [OK]
+    test_add_load_balancer_request_with_no_body_causes_bad_request ...     [OK]
+    test_add_load_balancer_with_nodes ...                                  [OK]
+    test_delete_loadbalancer ...                                           [OK]
+    test_delete_non_existant_loadbalancer ...                              [OK]
+    test_different_tenants_same_region_different_lbs ...                   [OK]
+    test_get_loadbalancer_no_nodes ...                                     [OK]
+    test_get_loadbalancer_with_nodes ...                                   [OK]
+    test_get_non_existant_loadbalancer ...                                 [OK]
+    test_lb_status_change_against_undefined_clb ...                        [OK]
+    test_lb_status_change_to_illegal_status ...                            [OK]
+    test_lb_status_change_with_bad_keys ...                                [OK]
+    test_lb_status_change_with_illegal_json ...                            [OK]
+    test_lb_status_changes_as_requested ...                                [OK]
+    test_list_loadbalancers ...                                            [OK]
+    test_list_loadbalancers_have_no_nodes ...                              [OK]
+    test_list_loadbalancers_when_none_exist ...                            [OK]
+    test_multiple_regions_multiple_endpoints ...                           [OK]
+    test_same_tenant_different_regions ...                                 [OK]
+  LoadbalancerNodeAPITests
+    test_add_bulk_nodes_over_limit ...                                     [OK]
+    test_add_duplicate_node ...                                            [OK]
+    test_add_multiple_nodes ...                                            [OK]
+    test_add_node_request_with_invalid_body_causes_bad_request ...         [OK]
+    test_add_node_request_with_no_body_causes_bad_request ...              [OK]
+    test_add_node_to_loadbalancer ...                                      [OK]
+    test_add_node_to_non_existant_loadbalancer ...                         [OK]
+    test_add_single_over_node_limit ...                                    [OK]
+    test_bulk_delete ...                                                   [OK]
+    test_bulk_delete_invalid_lb ...                                        [OK]
+    test_bulk_delete_no_nodes ...                                          [OK]
+    test_bulk_delete_no_nodes_invalid_lb ...                               [OK]
+    test_bulk_delete_nonexistent_nodes ...                                 [OK]
+    test_delete_node_on_loadbalancer ...                                   [OK]
+    test_delete_node_on_non_existant_loadbalancer ...                      [OK]
+    test_delete_non_existant_node_on_loadbalancer ...                      [OK]
+    test_get_node_on_loadbalancer ...                                      [OK]
+    test_get_node_on_non_existant_loadbalancer ...                         [OK]
+    test_get_non_existant_node_on_loadbalancer ...                         [OK]
+    test_list_nodes_on_loadbalancer ...                                    [OK]
+    test_list_nodes_on_non_existant_loadbalancer ...                       [OK]
+    test_updating_node_checks_for_invalid_loadbalancer_id ...              [OK]
+    test_updating_node_checks_for_invalid_node_id ...                      [OK]
+    test_updating_node_invalid_json ...                                    [OK]
+    test_updating_node_success ...                                         [OK]
+    test_updating_node_validation_error ...                                [OK]
+  ResponseGenerationTests
+    test_canned_loadbalancer ...                                           [OK]
+mimic.test.test_maas
+  MaasAPITests
+    test_agenthostinfo ...                                                 [OK]
+    test_agentinstallers ...                                               [OK]
+    test_alarm_count_per_np ...                                            [OK]
+    test_alarms_by_np ...                                                  [OK]
+    test_delete_alarm ...                                                  [OK]
+    test_delete_check ...                                                  [OK]
+    test_delete_entity ...                                                 [OK]
+    test_delete_notification ...                                           [OK]
+    test_delete_notificationplan ...                                       [OK]
+    test_delete_np_in_use ...                                              [OK]
+    test_delete_suppression ...                                            [OK]
+    test_fail_get_entity ...                                               [OK]
+    test_get_alarm ...                                                     [OK]
+    test_get_alarms_for_entity ...                                         [OK]
+    test_get_all_notification_plans ...                                    [OK]
+    test_get_all_notifications ...                                         [OK]
+    test_get_all_suppressions ...                                          [OK]
+    test_get_check ...                                                     [OK]
+    test_get_checks_for_entity ...                                         [OK]
+    test_get_entity ...                                                    [OK]
+    test_get_nonexistent_alarm ...                                         [OK]
+    test_get_notification_plan ...                                         [OK]
+    test_get_notificationtypes ...                                         [OK]
+    test_get_suppression ...                                               [OK]
+    test_jsonhome ...                                                      [OK]
+    test_list_alarm_examples ...                                           [OK]
+    test_list_entity ...                                                   [OK]
+    test_list_monitoring_zones ...                                         [OK]
+    test_metriclist ...                                                    [OK]
+    test_multiplot ...                                                     [OK]
+    test_multiplot_squarewave ...                                          [OK]
+    test_notificationplan ...                                              [OK]
+    test_overview_pagination ...                                           [OK]
+    test_overview_pagination_marker_not_found ...                          [OK]
+    test_partial_update_alarm ...                                          [OK]
+    test_partial_update_check ...                                          [OK]
+    test_partial_update_entity ...                                         [OK]
+    test_reset_session ...                                                 [OK]
+    test_resource_ids ...                                                  [OK]
+    test_unicode_label ...                                                 [OK]
+    test_update_alarm ...                                                  [OK]
+    test_update_check ...                                                  [OK]
+    test_update_entity ...                                                 [OK]
+    test_update_notification ...                                           [OK]
+    test_update_notificationplan ...                                       [OK]
+    test_update_suppression ...                                            [OK]
+mimic.test.test_mailgun
+  MailGunAPITests
+    test_mailgun_get_message_header_for_message ...                        [OK]
+    test_mailgun_get_messages ...                                          [OK]
+    test_mailgun_get_messages_by_filter ...                                [OK]
+    test_mailgun_get_messages_resulting_in_500s ...                        [OK]
+    test_mailgun_send_message ...                                          [OK]
+    test_mailgun_send_message_receives_error_400 ...                       [OK]
+    test_mailgun_send_message_receives_error_500 ...                       [OK]
+mimic.test.test_noit
+  NoitAPITests
+    test_create_check ...                                                  [OK]
+    test_create_check_fails_with_404_for_invalid_check_payload ...         [OK]
+    test_create_check_fails_with_500 ...                                   [OK]
+    test_create_check_fails_with_500_for_invalid_check_id ...              [OK]
+    test_delete_check ...                                                  [OK]
+    test_delete_not_existant_check ...                                     [OK]
+    test_get_all_checks ...                                                [OK]
+    test_get_check ...                                                     [OK]
+    test_get_version ...                                                   [OK]
+    test_test_check ...                                                    [OK]
+    test_test_check_fails_with_404_for_invalid_check_payload ...           [OK]
+    test_test_check_for_given_module ...                                   [OK]
+    test_update_check ...                                                  [OK]
+mimic.test.test_nova
+  NovaAPIChangesSinceTests
+    test_no_changes ...                                                    [OK]
+    test_returns_created_servers ...                                       [OK]
+    test_returns_deleted_servers ...                                       [OK]
+    test_returns_replaced_metadata_servers ...                             [OK]
+    test_returns_updated_metadata_servers ...                              [OK]
+    test_returns_updated_status_servers ...                                [OK]
+  NovaAPIListServerPaginationTests
+    test_deleted_servers_do_not_affect_pagination_no_changes_since ...     [OK]
+    test_with_invalid_marker ...                                           [OK]
+    test_with_limit_as_0 ...                                               [OK]
+    test_with_limit_eq_servers_only ...                                    [OK]
+    test_with_limit_eq_servers_with_marker ...                             [OK]
+    test_with_limit_eq_servers_with_marker_and_name ...                    [OK]
+    test_with_limit_eq_servers_with_name ...                               [OK]
+    test_with_limit_gt_servers_only ...                                    [OK]
+    test_with_limit_gt_servers_with_marker ...                             [OK]
+    test_with_limit_gt_servers_with_marker_and_name ...                    [OK]
+    test_with_limit_gt_servers_with_name ...                               [OK]
+    test_with_limit_lt_servers_only ...                                    [OK]
+    test_with_limit_lt_servers_with_marker ...                             [OK]
+    test_with_limit_lt_servers_with_marker_and_name ...                    [OK]
+    test_with_limit_lt_servers_with_name ...                               [OK]
+    test_with_marker_and_name ...                                          [OK]
+    test_with_negative_limit ...                                           [OK]
+    test_with_non_int_limit ...                                            [OK]
+    test_with_valid_marker_only ...                                        [OK]
+  NovaAPIMetadataTests
+    test_create_server_null_metadata_succeeds ...                          [OK]
+    test_create_server_too_many_metadata_items_takes_precedence ...        [OK]
+    test_create_server_with_invalid_metadata_object ...                    [OK]
+    test_create_server_with_invalid_metadata_values ...                    [OK]
+    test_create_server_with_too_many_metadata_items ...                    [OK]
+    test_get_metadata ...                                                  [OK]
+    test_get_metadata_on_nonexistant_server_404 ...                        [OK]
+    test_set_metadata_item_on_nonexistant_server_404 ...                   [OK]
+    test_set_metadata_item_on_nonexistant_server_404_takes_precedence ...  [OK]
+    test_set_metadata_item_replace_existing_metadata ...                   [OK]
+    test_set_metadata_item_too_many_metadata_items_takes_precedence ...    [OK]
+    test_set_metadata_item_with_extra_keys_succeeds ...                    [OK]
+    test_set_metadata_item_with_invalid_json_body_fails ...                [OK]
+    test_set_metadata_item_with_invalid_metadata_values ...                [OK]
+    test_set_metadata_item_with_mismatching_key_and_body ...               [OK]
+    test_set_metadata_item_with_only_meta_body_succeeds ...                [OK]
+    test_set_metadata_item_with_too_many_keys_and_values ...               [OK]
+    test_set_metadata_item_with_too_many_metadata_items_already ...        [OK]
+    test_set_metadata_item_with_wrong_key_fails ...                        [OK]
+    test_set_metadata_item_with_wrong_meta_type_fails ...                  [OK]
+    test_set_metadata_on_nonexistant_server_404 ...                        [OK]
+    test_set_metadata_on_nonexistant_server_404_takes_precedence ...       [OK]
+    test_set_metadata_to_null_fails ...                                    [OK]
+    test_set_metadata_too_many_metadata_items_takes_precedence ...         [OK]
+    test_set_metadata_with_extra_keys_succeeds ...                         [OK]
+    test_set_metadata_with_invalid_json_body_fails ...                     [OK]
+    test_set_metadata_with_invalid_metadata_object ...                     [OK]
+    test_set_metadata_with_invalid_metadata_values ...                     [OK]
+    test_set_metadata_with_only_metadata_body_succeeds ...                 [OK]
+    test_set_metadata_with_too_many_metadata_items ...                     [OK]
+    test_set_metadata_without_metadata_key ...                             [OK]
+  NovaAPINegativeTests
+    test_create_false_negative_failure_using_behaviors ...                 [OK]
+    test_create_false_negative_failure_with_specific_type ...              [OK]
+    test_create_false_negative_failure_with_string_type ...                [OK]
+    test_create_server_failure ...                                         [OK]
+    test_create_server_failure_and_list_servers ...                        [OK]
+    test_create_server_failure_based_on_metadata ...                       [OK]
+    test_create_server_failure_string_type ...                             [OK]
+    test_create_server_failure_using_behaviors ...                         [OK]
+    test_create_server_request_with_invalid_body_causes_bad_request ...    [OK]
+    test_create_server_request_with_no_body_causes_bad_request ...         [OK]
+    test_delete_server_fails_specified_number_of_times ...                 [OK]
+    test_get_invalid_image ...                                             [OK]
+    test_get_server_flavor ...                                             [OK]
+    test_modify_status_non_existent_server ...                             [OK]
+    test_server_active_then_error_behavior ...                             [OK]
+    test_server_building_behavior ...                                      [OK]
+    test_server_in_building_state_for_specified_time ...                   [OK]
+    test_server_in_error_state ...                                         [OK]
+  NovaAPITests
+    test_change_password ...                                               [OK]
+    test_confirm_and_revert_server_resize ...                              [OK]
+    test_create_image ...                                                  [OK]
+    test_create_server ...                                                 [OK]
+    test_create_server_with_bad_diskConfig ...                             [OK]
+    test_create_server_with_manual_diskConfig ...                          [OK]
+    test_created_servers_have_dissimilar_admin_passwords ...               [OK]
+    test_delete_server ...                                                 [OK]
+    test_delete_server_negative ...                                        [OK]
+    test_different_region_same_server ...                                  [OK]
+    test_different_tenants_same_region ...                                 [OK]
+    test_get_server ...                                                    [OK]
+    test_get_server_ips ...                                                [OK]
+    test_get_server_ips_negative ...                                       [OK]
+    test_get_server_limits ...                                             [OK]
+    test_get_server_negative ...                                           [OK]
+    test_list_servers ...                                                  [OK]
+    test_list_servers_with_args ...                                        [OK]
+    test_list_servers_with_args_negative ...                               [OK]
+    test_list_servers_with_details ...                                     [OK]
+    test_list_servers_with_details_with_args ...                           [OK]
+    test_list_servers_with_details_with_args_negative ...                  [OK]
+    test_modify_existing_server_status ...                                 [OK]
+    test_modify_multiple_server_status ...                                 [OK]
+    test_reboot_server ...                                                 [OK]
+    test_rebuild ...                                                       [OK]
+    test_rescue ...                                                        [OK]
+    test_server_resize ...                                                 [OK]
+    test_unrescue ...                                                      [OK]
+  TestsForNovaCreateServerBehaviorControlPlane
+    test_deleting_behavior_removes_top_behavior ...                        [OK]
+    test_deleting_nonexistant_behavior_fails ...                           [OK]
+    test_providing_invalid_json_fails_with_400 ...                         [OK]
+    test_sequence_behavior ...                                             [OK]
+mimic.test.test_nova_images
+  NovaAPIOnMetalImageTests
+    test_OnMetal_image_list ...                                            [OK]
+    test_OnMetal_image_list_details ...                                    [OK]
+    test_get_OnMetal_server_image ...                                      [OK]
+  NovaAPIVirtualImageTests
+    test_get_image_list_after_list_images ...                              [OK]
+    test_get_image_list_with_details ...                                   [OK]
+    test_get_image_list_with_details_is_consistent ...                     [OK]
+    test_get_image_that_does_not_exist ...                                 [OK]
+    test_get_server_image_negative ...                                     [OK]
+    test_get_server_image_negative2 ...                                    [OK]
+    test_get_virtual_server_image ...                                      [OK]
+    test_get_virtual_server_image_list ...                                 [OK]
+    test_no_OnMetal_images_in_ORD ...                                      [OK]
+mimic.test.test_queue
+  QueueAPITests
+    test_create_queue ...                                                  [OK]
+    test_delete_queue ...                                                  [OK]
+    test_list_queues ...                                                   [OK]
+mimic.test.test_rackconnect_v3
+  LoadBalancerObjectTests
+    test_LBPoolNode_short_json ...                                         [OK]
+    test_LBPoolNode_update ...                                             [OK]
+    test_LBPool_find_nodes_by_id ...                                       [OK]
+    test_LBPool_find_nodes_by_server_id ...                                [OK]
+    test_LBPool_short_json ...                                             [OK]
+  LoadbalancerPoolAPITests
+    test_add_bulk_pool_nodes_errors_with_no_node_added ...                 [OK]
+    test_add_bulk_pool_nodes_for_an_existing_node ...                      [OK]
+    test_add_bulk_pool_nodes_multiple_errors ...                           [OK]
+    test_add_bulk_pool_nodes_success_response ...                          [OK]
+    test_add_bulk_pool_nodes_then_list ...                                 [OK]
+    test_add_bulk_pool_nodes_to_multiple_non_existant_pool_ids ...         [OK]
+    test_add_bulk_pool_nodes_to_single_non_existant_pool_id_1 ...          [OK]
+    test_add_bulk_pool_nodes_to_single_non_existant_pool_id_2 ...          [OK]
+    test_add_bulk_pool_nodes_when_pool_id_is_non_uuid ...                  [OK]
+    test_default_multiple_pools ...                                        [OK]
+    test_different_regions_same_tenant_different_pools ...                 [OK]
+    test_get_pool_400_non_uuid_pool_id ...                                 [OK]
+    test_get_pool_404_non_existant_pool ...                                [OK]
+    test_get_pool_on_success ...                                           [OK]
+    test_list_pools_default_one ...                                        [OK]
+    test_remove_bulk_pool_nodes_given_a_non_existing_node ...              [OK]
+    test_remove_bulk_pool_nodes_multiple_errors ...                        [OK]
+    test_remove_bulk_pool_nodes_success ...                                [OK]
+    test_remove_bulk_pool_nodes_to_multiple_non_existant_pool_ids ...      [OK]
+    test_remove_bulk_pool_nodes_to_single_non_existant_pool_id_1 ...       [OK]
+    test_remove_bulk_pool_nodes_to_single_non_existant_pool_id_2 ...       [OK]
+    test_remove_bulk_pool_nodes_when_pool_id_is_non_uuid ...               [OK]
+  LoadbalancerPoolNodesAPITests
+    test_add_pool_node_unimplemented ...                                   [OK]
+    test_get_pool_404_invalid_pool_nodes ...                               [OK]
+    test_get_pool_node_details_unimplemented ...                           [OK]
+    test_get_pool_node_unimplemented ...                                   [OK]
+    test_get_pool_nodes_details_unimplemented ...                          [OK]
+    test_get_pool_nodes_empty ...                                          [OK]
+    test_remove_pool_node_unimplemented ...                                [OK]
+mimic.test.test_resource
+  RootAndPresetTests
+    test_fastly ...                                                        [OK]
+    test_presets ...                                                       [OK]
+    test_root ...                                                          [OK]
+    test_send_grid ...                                                     [OK]
+    test_tick ...                                                          [OK]
+  ServiceResourceTests
+    test_child_resource_gets_base_uri_from_request ...                     [OK]
+    test_service_endpoint_returns_404_if_wrong_region ...                  [OK]
+    test_service_endpoint_returns_404_if_wrong_service_id ...              [OK]
+    test_service_endpoint_returns_service_resource ...                     [OK]
+mimic.test.test_session
+  SessionCreationTests
+    test_by_token_after_username ...                                       [OK]
+    test_by_token_after_username_wrong_tenant ...                          [OK]
+    test_by_username_after_token ...                                       [OK]
+    test_different_username_different_token ...                            [OK]
+    test_generate_username_from_tenant_id ...                              [OK]
+    test_impersonation ...                                                 [OK]
+    test_session_for_apikey_after_username_wrong_tenant ...                [OK]
+    test_session_for_tenant_id ...                                         [OK]
+    test_session_for_tenant_id_with_custom_tenant ...                      [OK]
+    test_sessions_created_all_have_integer_tenant_ids ...                  [OK]
+    test_sessions_created_honor_specified_tenant_id ...                    [OK]
+    test_token_after_api_key_specifying_tenant ...                         [OK]
+    test_username_password_after_token_specifying_tenant ...               [OK]
+    test_username_password_new ...                                         [OK]
+    test_username_password_wrong_tenant ...                                [OK]
+mimic.test.test_swift
+  SwiftTests
+    test_create_container ...                                              [OK]
+    test_create_twice ...                                                  [OK]
+    test_get_container ...                                                 [OK]
+    test_get_no_container ...                                              [OK]
+    test_openstack_ids ...                                                 [OK]
+    test_put_object ...                                                    [OK]
+    test_service_catalog ...                                               [OK]
+mimic.test.test_tap
+  TapTests
+    test_listenOption ...                                                  [OK]
+    test_makeService ...                                                   [OK]
+    test_plugin ...                                                        [OK]
+    test_realtime ...                                                      [OK]
+mimic.test.test_util
+  HelperTests
+    test_random_hex_generator ...                                          [OK]
+    test_random_ipv4_completely_random ...                                 [OK]
+    test_random_ipv4_with_prefixes ...                                     [OK]
+    test_seconds_to_timestamp_default_timestamp ...                        [OK]
+    test_seconds_to_timestamp_provided_timestamp ...                       [OK]
+    test_timestamp_to_seconds ...                                          [OK]
+  TestHelperTests
+    test_unicode_body ...                                                  [OK]
+  TestRandomString
+    test_length ...                                                        [OK]
+    test_selectable ...                                                    [OK]
+
+-------------------------------------------------------------------------------
+Ran 411 tests in 4.898s
+
+PASSED (successes=411)
+py27 runtests: commands[2] | coverage report -m
+Name                                           Stmts   Miss Branch BrMiss  Cover   Missing
+------------------------------------------------------------------------------------------
+mimic/__init__                                     1      0      0      0   100%   
+mimic/canned_responses/__init__                    0      0      0      0   100%   
+mimic/canned_responses/auth                       29      0     10      0   100%   
+mimic/canned_responses/fastly                     64      0     12      0   100%   
+mimic/canned_responses/loadbalancer               48      0     38      2    98%   
+mimic/canned_responses/maas_agent_info             2      0      0      0   100%   
+mimic/canned_responses/maas_alarm_examples         2      0      0      0   100%   
+mimic/canned_responses/maas_json_home              2      0      0      0   100%   
+mimic/canned_responses/maas_monitoring_zones       2      0      0      0   100%   
+mimic/canned_responses/mimic_presets               1      0      0      0   100%   
+mimic/canned_responses/noit                       30      0      2      0   100%   
+mimic/canned_responses/noit_metrics_fixture        2      0      0      0   100%   
+mimic/canned_responses/nova                       17      3      0      0    82%   31, 45, 52
+mimic/canned_responses/queue                      14      0      4      2    89%   
+mimic/canned_responses/support                     2      1      0      0    50%   10
+mimic/canned_responses/volumes                     2      1      0      0    50%   10
+mimic/catalog                                     22      0      4      1    96%   
+mimic/core                                        30      0     10      0   100%   
+mimic/imimic                                       4      0      0      0   100%   
+mimic/model/__init__                               0      0      0      0   100%   
+mimic/model/behaviors                            124      0     38      2    99%   
+mimic/model/clb_errors                            19      0      8      1    96%   
+mimic/model/clb_objects                          221      0    108      2    99%   
+mimic/model/cloudfeeds                            25      0      6      0   100%   
+mimic/model/flavor_collections                    47      0     24      2    97%   
+mimic/model/flavors                               44      0      2      0   100%   
+mimic/model/glance_image_collections              43      5     22      6    83%   30-33, 84
+mimic/model/identity                              70      0     18      1    99%   
+mimic/model/image_collections                     55      0     28      0   100%   
+mimic/model/mailgun_objects                       25      0     10      2    94%   
+mimic/model/nova_objects                         322      0    132      1    99%   
+mimic/model/rackspace_images                     130      7      6      0    95%   110, 123, 133, 158-171, 617
+mimic/plugins/__init__                             0      0      0      0   100%   
+mimic/plugins/cloudfeeds_plugin                    3      0      0      0   100%   
+mimic/plugins/dns_plugin                           2      0      0      0   100%   
+mimic/plugins/glance_plugin                        2      0      0      0   100%   
+mimic/plugins/loadbalancer_plugin                  3      0      0      0   100%   
+mimic/plugins/maas_plugin                          2      0      0      0   100%   
+mimic/plugins/nova_plugin                          3      0      0      0   100%   
+mimic/plugins/queue_plugin                         2      0      0      0   100%   
+mimic/plugins/rackconnect_v3_plugin                2      0      0      0   100%   
+mimic/plugins/support_plugin                       2      0      0      0   100%   
+mimic/plugins/swift_plugin                         2      0      0      0   100%   
+mimic/plugins/volumes_plugin                       2      0      0      0   100%   
+mimic/resource                                    46      0      2      0   100%   
+mimic/rest/__init__                                0      0      0      0   100%   
+mimic/rest/auth_api                              130      0     34      0   100%   
+mimic/rest/cloudfeeds                             36      0      6      0   100%   
+mimic/rest/dns_api                                30      7      2      0    78%   52, 63-66, 76-77
+mimic/rest/fastly_api                             57      0      2      0   100%   
+mimic/rest/glance_api                             51      0     12      0   100%   
+mimic/rest/loadbalancer_api                      135      0     14      1    99%   
+mimic/rest/maas_api                              655      2    208     42    95%   684-685
+mimic/rest/mailgun_api                            41      0      8      0   100%   
+mimic/rest/mimicapp                                5      0      0      0   100%   
+mimic/rest/noit_api                               53      0      8      0   100%   
+mimic/rest/nova_api                              171      3     26      0    98%   387, 395, 402
+mimic/rest/queue_api                              48      0      4      0   100%   
+mimic/rest/rackconnect_v3_api                    147      0     50      0   100%   
+mimic/rest/support_api                            29      6      2      0    81%   51, 64-67, 76
+mimic/rest/swift_api                              63      0     16      0   100%   
+mimic/rest/volumes_api                            30      7      2      0    78%   51, 62-65, 74-75
+mimic/session                                     72      0     28      2    98%   
+mimic/tap                                         21      0      2      0   100%   
+mimic/util/__init__                                0      0      0      0   100%   
+mimic/util/helper                                 43      1      6      1    96%   113
+twisted/plugins/mimic                              2      2      0      0     0%   4-7
+------------------------------------------------------------------------------------------
+TOTAL                                           3289     45    914     68    97%   
+py27 runtests: commands[3] | coverage xml
+___________________________________ summary ____________________________________
+  py27: commands succeeded
+  congratulations :)
